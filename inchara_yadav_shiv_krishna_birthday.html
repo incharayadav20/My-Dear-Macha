@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Nunito:wght@400;600;700;800;900&family=Cinzel:wght@400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100vh;overflow-x:hidden}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,#0a0318 0%,#1a0533 25%,#0d1b4b 55%,#071530 100%);color:#fff;position:relative}
+canvas#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+
+/* STARS */
+.starbg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.fstar{position:absolute;border-radius:50%;animation:fst ease-in-out infinite}
+@keyframes fst{0%,100%{opacity:.3;transform:scale(1)}50%{opacity:1;transform:scale(1.3)}}
+
+/* MUSIC BTN */
+.music-fab{position:fixed;top:14px;right:14px;z-index:999;background:linear-gradient(135deg,#7c3aed,#3b82f6);border:none;border-radius:50%;width:46px;height:46px;font-size:1.3rem;cursor:pointer;box-shadow:0 4px 18px rgba(124,58,237,.5);transition:transform .2s;display:flex;align-items:center;justify-content:center}
+.music-fab:hover{transform:scale(1.12)}
+
+/* CONTENT */
+.page{position:relative;z-index:2;padding:0 0 60px}
+
+/* FEATHER BAR */
+.feather-bar{text-align:center;padding:18px 0 4px;font-size:1.8rem;letter-spacing:.6rem;animation:fw 3s ease-in-out infinite}
+@keyframes fw{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+
+/* TRISHUL HERO */
+.hero{text-align:center;padding:4px 16px 16px}
+.trishul-wrap{margin-bottom:8px}
+.trishul-svg{filter:drop-shadow(0 0 18px #fbbf24) drop-shadow(0 0 40px #f59e0b);animation:tpulse 2.5s ease-in-out infinite;display:inline-block}
+@keyframes tpulse{0%,100%{filter:drop-shadow(0 0 14px #fbbf24) drop-shadow(0 0 30px #f59e0b);transform:scale(1)}50%{filter:drop-shadow(0 0 30px #fde68a) drop-shadow(0 0 60px #fbbf24) drop-shadow(0 0 80px #f59e0b);transform:scale(1.06)}}
+.om{font-size:1.1rem;color:#fbbf24;letter-spacing:4px;opacity:.75;margin-bottom:6px}
+.from-badge{display:inline-block;background:rgba(167,139,250,.15);border:1px solid rgba(167,139,250,.35);border-radius:50px;padding:.25rem 1.1rem;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:#c4b5fd;margin-bottom:8px}
+.hero-title{font-family:'Pacifico',cursive;font-size:clamp(2rem,7vw,4rem);background:linear-gradient(90deg,#fbbf24,#a78bfa,#60a5fa,#fbbf24);background-size:300% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:rshift 3s linear infinite;line-height:1.2;margin-bottom:4px}
+@keyframes rshift{0%{background-position:0%}100%{background-position:300%}}
+.hero-name{font-family:'Pacifico',cursive;font-size:clamp(1.4rem,5vw,2.8rem);color:#fde68a;text-shadow:0 0 30px rgba(253,230,138,.7);animation:npulse 2s ease-in-out infinite;margin-bottom:6px}
+@keyframes npulse{0%,100%{text-shadow:0 0 20px rgba(253,230,138,.6);transform:scale(1)}50%{text-shadow:0 0 60px rgba(253,230,138,1);transform:scale(1.04)}}
+.bless-row{font-size:.82rem;color:#a78bfa;font-weight:700;letter-spacing:1.5px;margin-bottom:8px}
+.heart-row{display:flex;justify-content:center;gap:.35rem;margin:4px 0}
+.hrt{font-size:1.2rem;animation:hb 1.2s ease-in-out infinite;color:#a78bfa}
+.hrt:nth-child(2){animation-delay:.15s;font-size:1.6rem;color:#c4b5fd}
+.hrt:nth-child(3){animation-delay:.3s;font-size:2rem;color:#7c3aed}
+.hrt:nth-child(4){animation-delay:.15s;font-size:1.6rem;color:#c4b5fd}
+.hrt:nth-child(5){animation-delay:.3s;font-size:1.2rem;color:#a78bfa}
+@keyframes hb{0%,100%{transform:scale(1)}14%{transform:scale(1.4)}42%{transform:scale(1.2)}}
+
+/* TWIT ROW */
+.twit-row{display:flex;justify-content:center;gap:.6rem;flex-wrap:wrap;margin:10px 0}
+.twit{font-size:1.7rem;animation:bs 1.8s ease-in-out infinite;display:inline-block}
+.twit:nth-child(2){animation-delay:.15s}.twit:nth-child(3){animation-delay:.3s}.twit:nth-child(4){animation-delay:.45s}.twit:nth-child(5){animation-delay:.6s}.twit:nth-child(6){animation-delay:.75s}.twit:nth-child(7){animation-delay:.9s}
+@keyframes bs{0%,100%{transform:translateY(0) rotate(0) scale(1)}30%{transform:translateY(-14px) rotate(15deg) scale(1.25)}60%{transform:translateY(-5px) rotate(-8deg) scale(.95)}}
+
+/* WISH */
+.wish-wrap{max-width:620px;margin:0 auto 20px;padding:0 14px}
+.wish-card{background:rgba(124,58,237,.08);backdrop-filter:blur(12px);border:1px solid rgba(167,139,250,.25);border-radius:22px;padding:1.6rem 1.8rem;text-align:center;position:relative;overflow:hidden}
+.wish-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(167,139,250,.08),rgba(96,165,250,.06));pointer-events:none}
+.wish-text{font-size:.96rem;line-height:2;color:#e2e8f0;position:relative;z-index:1}
+.wish-text .gold{color:#fbbf24;font-weight:800}
+.wish-text .blu{color:#93c5fd;font-weight:800}
+.wish-text .vio{color:#c4b5fd;font-weight:800}
+.wish-sign{margin-top:10px;font-size:.9rem;color:#a78bfa;font-weight:700;position:relative;z-index:1}
+
+/* MARQUEE */
+.mq-wrap{overflow:hidden;padding:.65rem 0;margin-bottom:20px;background:rgba(124,58,237,.08);border-top:1px solid rgba(167,139,250,.2);border-bottom:1px solid rgba(167,139,250,.2)}
+.mq-inner{display:flex;gap:2rem;animation:mqscroll 24s linear infinite;white-space:nowrap}
+@keyframes mqscroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.mqi{font-size:1.15rem;flex-shrink:0;color:#c4b5fd}
+
+/* GIFT SECTION */
+.gift-section{text-align:center;padding:10px 16px 10px;margin-bottom:16px}
+.gift-label{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:4px;text-transform:uppercase;color:#a78bfa;margin-bottom:12px;opacity:.85}
+
+/* GIFT BOX */
+.giftbox-wrap{display:inline-block;cursor:pointer;position:relative;margin-bottom:16px}
+.giftbox-wrap:hover .giftbox-svg{filter:drop-shadow(0 0 30px #fbbf24) drop-shadow(0 0 60px #f59e0b)}
+.giftbox-svg{filter:drop-shadow(0 0 18px rgba(251,191,36,.5));transition:filter .3s;animation:giftbob 2.5s ease-in-out infinite}
+@keyframes giftbob{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-8px) rotate(1deg)}}
+.open-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;border:none;border-radius:50px;padding:.75rem 2.2rem;font-size:1rem;font-weight:900;font-family:'Nunito',sans-serif;cursor:pointer;letter-spacing:1px;box-shadow:0 6px 28px rgba(124,58,237,.5);transition:transform .2s,box-shadow .2s;margin-top:4px}
+.open-btn:hover{transform:scale(1.07);box-shadow:0 10px 40px rgba(124,58,237,.7)}
+.open-btn:active{transform:scale(.97)}
+
+/* ENVELOPE OVERLAY */
+.env-overlay{position:fixed;inset:0;z-index:900;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(5,3,20,.85);backdrop-filter:blur(8px)}
+.env-overlay.open{display:flex}
+
+/* ENVELOPE */
+.envelope-scene{position:relative;width:min(520px,95vw);display:flex;flex-direction:column;align-items:center}
+.env-close{position:absolute;top:-14px;right:-14px;background:rgba(124,58,237,.7);border:1px solid rgba(167,139,250,.4);color:#fff;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10}
+.env-close:hover{background:#7c3aed}
+
+/* envelope SVG wrapper */
+.env-svg-wrap{width:100%;cursor:pointer;position:relative}
+.env-svg-wrap svg{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 32px rgba(124,58,237,.6))}
+
+/* letter pops up from envelope */
+.letter{position:relative;width:100%;background:linear-gradient(160deg,#1e1040,#0f1e4a);border:1px solid rgba(167,139,250,.3);border-radius:18px;padding:1.4rem 1.6rem;margin-top:14px;display:none;animation:letterRise .5s ease}
+@keyframes letterRise{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
+.letter.show{display:block}
+.letter-title{font-family:'Pacifico',cursive;color:#fde68a;font-size:1.2rem;text-align:center;margin-bottom:14px}
+
+/* MEMORY CARDS INSIDE LETTER */
+.mem-cards-inner{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.mcard{background:rgba(124,58,237,.15);border:1px solid rgba(167,139,250,.25);border-radius:14px;padding:12px;text-align:center;position:relative;overflow:hidden;transition:transform .3s}
+.mcard:hover{transform:translateY(-4px) rotate(-1deg)}
+.mcard:nth-child(2):hover{transform:translateY(-4px) rotate(1deg)}
+.mcard:nth-child(3):hover{transform:translateY(-4px) rotate(.5deg)}
+.mcard:nth-child(4):hover{transform:translateY(-4px) rotate(-1deg)}
+.mcard-tape{position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(-3deg);width:32px;height:10px;background:rgba(196,181,253,.3);border-radius:2px}
+.mcard-illo{width:100%;height:90px;border-radius:10px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;position:relative;overflow:hidden}
+.mcard-illo.c1{background:linear-gradient(135deg,#1e3a8a,#3730a3)}
+.mcard-illo.c2{background:linear-gradient(135deg,#4c1d95,#1e40af)}
+.mcard-illo.c3{background:linear-gradient(135deg,#78350f,#1e3a8a)}
+.mcard-illo.c4{background:linear-gradient(135deg,#14532d,#1e3a8a)}
+.mcard-name{font-size:.75rem;font-weight:800;color:#c4b5fd;margin-bottom:3px}
+.mcard-desc{font-size:.7rem;color:#94a3b8;line-height:1.5}
+
+/* letter note */
+.letter-note{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:12px;padding:12px 14px;font-size:.85rem;color:#cbd5e1;line-height:1.8;text-align:center;margin-bottom:10px}
+.letter-note .g{color:#fbbf24;font-weight:800}
+.letter-sign{text-align:center;font-size:.85rem;color:#a78bfa;font-weight:700}
+
+/* CAKE */
+.cake-section{text-align:center;margin-bottom:18px;padding:0 16px}
+.cake-svg{filter:drop-shadow(0 0 22px rgba(167,139,250,.6))}
+.blow-btn{margin-top:8px;display:inline-block;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;border:none;border-radius:50px;padding:.65rem 1.8rem;font-size:.9rem;font-weight:800;font-family:'Nunito',sans-serif;cursor:pointer;letter-spacing:1px;box-shadow:0 4px 20px rgba(124,58,237,.5);transition:transform .2s}
+.blow-btn:hover{transform:scale(1.06)}
+.blow-btn:disabled{opacity:.5;cursor:default}
+.blown-msg{display:none;font-family:'Pacifico',cursive;color:#fbbf24;font-size:1.1rem;margin-top:8px;animation:popIn .4s ease}
+@keyframes popIn{0%{transform:scale(0);opacity:0}80%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+
+/* FOOTER */
+.footer{text-align:center;padding:1.8rem 1.2rem 2.5rem}
+.footer-title{font-family:'Pacifico',cursive;font-size:1.2rem;color:#fbbf24;margin-bottom:6px}
+.footer-sub{font-size:.78rem;color:#475569;letter-spacing:2px;text-transform:uppercase;margin-top:8px}
+</style>
+</head>
+<body>
+<canvas id="cc"></canvas>
+<div class="starbg" id="starbg"></div>
+
+<!-- MUSIC FAB -->
+<button class="music-fab" id="musicBtn" onclick="toggleMusic()" title="Toggle music">🔇</button>
+
+<!-- AUDIO using Web Audio API for flute-like tone -->
+<div style="display:none" id="audioContainer"></div>
+
+<div class="page">
+
+  <!-- FEATHER BAR -->
+  <div class="feather-bar">🪶🔱🪈🦚🔱🪶</div>
+
+  <!-- HERO -->
+  <div class="hero">
+    <!-- TRISHUL SVG -->
+    <div class="trishul-wrap">
+      <svg class="trishul-svg" width="70" height="150" viewBox="0 0 100 200">
+        <defs>
+          <linearGradient id="tg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#fde68a"/>
+            <stop offset="50%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#f59e0b"/>
+          </linearGradient>
+        </defs>
+        <rect x="47" y="58" width="6" height="140" rx="3" fill="url(#tg)"/>
+        <path d="M50 4 C50 4 41 24 41 44 C41 54 45 61 50 61 C55 61 59 54 59 44 C59 24 50 4 50 4Z" fill="url(#tg)"/>
+        <path d="M27 16 C27 16 20 30 20 44 C20 52 24 58 28 58 C32 58 37 52 37 44 L42 50 L37 30 C34 23 29 16 27 16Z" fill="url(#tg)"/>
+        <path d="M73 16 C73 16 80 30 80 44 C80 52 76 58 72 58 C68 58 63 52 63 44 L58 50 L63 30 C66 23 71 16 73 16Z" fill="url(#tg)"/>
+        <rect x="18" y="61" width="64" height="5" rx="2.5" fill="url(#tg)"/>
+        <circle cx="50" cy="118" r="5" fill="url(#tg)" opacity=".7"/>
+        <circle cx="50" cy="138" r="5" fill="url(#tg)" opacity=".7"/>
+        <circle cx="50" cy="158" r="5" fill="url(#tg)" opacity=".7"/>
+        <ellipse cx="34" cy="106" rx="10" ry="6" fill="none" stroke="url(#tg)" stroke-width="1.5" opacity=".6"/>
+        <ellipse cx="66" cy="106" rx="10" ry="6" fill="none" stroke="url(#tg)" stroke-width="1.5" opacity=".6"/>
+        <line x1="44" y1="106" x2="56" y2="106" stroke="url(#tg)" stroke-width="1.5" opacity=".6"/>
+      </svg>
+    </div>
+    <div class="om">ॐ नमः शिवाय</div>
+    <div class="from-badge">✨ From Inchara Yadav, with all the love ✨</div>
+    <div class="twit-row">
+      <span class="twit">🎉</span><span class="twit">🔱</span><span class="twit">💙</span>
+      <span class="twit">🪈</span><span class="twit">🎊</span><span class="twit">✨</span>
+      <span class="twit">🌸</span>
+    </div>
+    <div class="hero-title">Happy Birthday</div>
+    <div class="hero-name">Macha! 🥹💙</div>
+    <div class="bless-row">🙏 Har Har Mahadev &nbsp;·&nbsp; Jai Shri Krishna 🙏</div>
+    <div class="heart-row">
+      <span class="hrt">💜</span><span class="hrt">💜</span><span class="hrt">💜</span>
+      <span class="hrt">💜</span><span class="hrt">💜</span>
+    </div>
+  </div>
+
+  <!-- WISH -->
+  <div class="wish-wrap">
+    <div class="wish-card">
+      <p class="wish-text">
+        Hey <span class="gold">my dearest macha</span>! 🥳🌟<br><br>
+        On this beautiful day, I — <span class="vio">Inchara Yadav</span>, your favourite Shiv bhakt bestie 🔱 — want you to know that you mean the absolute world to me. 💙<br><br>
+        From <span class="blu">sitting at the bus stop long after everyone left</span>, to <span class="blu">finishing projects even during holidays</span> — every memory with you is my forever treasure. 🪈<br><br>
+        May <span class="gold">Bholenath</span> shower you with blessings, and may <span class="gold">Shri Krishna's flute</span> play only happiness into your life today and always! 🙏🔱<br><br>
+        <span class="vio">I love you so much, macha. Happy birthday! 💙🎂</span>
+      </p>
+      <div class="wish-sign">— Inchara Yadav 🔱💜</div>
+    </div>
+  </div>
+
+  <!-- MARQUEE -->
+  <div class="mq-wrap">
+    <div class="mq-inner">
+      <span class="mqi">🔱 Har Har Mahadev!</span>
+      <span class="mqi">🎉 Happy Birthday Macha!</span>
+      <span class="mqi">💙 Jai Shri Krishna 🪈</span>
+      <span class="mqi">🚌 Bus stop besties forever!</span>
+      <span class="mqi">🧠 Same brain different body!</span>
+      <span class="mqi">🏆 1st prize winners!</span>
+      <span class="mqi">💻 Holiday project gang!</span>
+      <span class="mqi">✨ Bholenath ki kripa sadaa rahe!</span>
+      <span class="mqi">💜 So much love for you!</span>
+      <span class="mqi">🌟 You are so special!</span>
+      <span class="mqi">🔱 Har Har Mahadev!</span>
+      <span class="mqi">🎉 Happy Birthday Macha!</span>
+      <span class="mqi">💙 Jai Shri Krishna 🪈</span>
+      <span class="mqi">🚌 Bus stop besties forever!</span>
+      <span class="mqi">🧠 Same brain different body!</span>
+      <span class="mqi">🏆 1st prize winners!</span>
+      <span class="mqi">💻 Holiday project gang!</span>
+      <span class="mqi">✨ Bholenath ki kripa sadaa rahe!</span>
+      <span class="mqi">💜 So much love for you!</span>
+      <span class="mqi">🌟 You are so special!</span>
+    </div>
+  </div>
+
+  <!-- GIFT SECTION -->
+  <div class="gift-section">
+    <div class="gift-label">🎁 A special gift from the heart 💜</div>
+    <!-- GIFT BOX -->
+    <div class="giftbox-wrap" onclick="openGift()">
+      <svg class="giftbox-svg" width="160" height="160" viewBox="0 0 160 160">
+        <defs>
+          <linearGradient id="boxg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#5b21b6"/>
+            <stop offset="100%" stop-color="#3b82f6"/>
+          </linearGradient>
+          <linearGradient id="lidg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#7c3aed"/>
+            <stop offset="100%" stop-color="#60a5fa"/>
+          </linearGradient>
+        </defs>
+        <!-- box body -->
+        <rect x="20" y="75" width="120" height="75" rx="8" fill="url(#boxg)"/>
+        <!-- lid -->
+        <rect x="14" y="58" width="132" height="22" rx="6" fill="url(#lidg)"/>
+        <!-- ribbon vertical -->
+        <rect x="72" y="58" width="16" height="92" rx="4" fill="#fbbf24" opacity=".9"/>
+        <!-- ribbon horizontal on lid -->
+        <rect x="14" y="63" width="132" height="12" rx="4" fill="#fde68a" opacity=".7"/>
+        <!-- bow left loop -->
+        <ellipse cx="63" cy="54" rx="20" ry="12" fill="#fbbf24" transform="rotate(-30 63 54)"/>
+        <!-- bow right loop -->
+        <ellipse cx="97" cy="54" rx="20" ry="12" fill="#fbbf24" transform="rotate(30 97 54)"/>
+        <!-- bow centre -->
+        <circle cx="80" cy="57" r="9" fill="#fde68a"/>
+        <!-- star deco on box -->
+        <text x="48" y="125" font-size="22" text-anchor="middle">🔱</text>
+        <text x="112" y="125" font-size="22" text-anchor="middle">💙</text>
+        <!-- sparkles -->
+        <text x="18" y="40" font-size="14">✨</text>
+        <text x="130" y="44" font-size="14">✨</text>
+        <text x="78" y="20" font-size="16">🌟</text>
+      </svg>
+    </div>
+    <br>
+    <button class="open-btn" onclick="openGift()">🎁 Open Your Gift, Macha!</button>
+  </div>
+
+  <!-- CAKE -->
+  <div class="cake-section">
+    <svg class="cake-svg" width="190" height="200" viewBox="0 0 200 210">
+      <ellipse cx="100" cy="183" rx="78" ry="12" fill="#3730a3" opacity=".4"/>
+      <rect x="22" y="136" width="156" height="50" rx="15" fill="#5b21b6"/>
+      <rect x="35" y="95" width="130" height="44" rx="12" fill="#7c3aed"/>
+      <rect x="52" y="63" width="96" height="35" rx="10" fill="#60a5fa"/>
+      <path d="M22 146 Q40 134 58 146 Q76 158 94 146 Q112 134 130 146 Q148 158 166 146 Q178 134 178 146" fill="none" stroke="#c4b5fd" stroke-width="4" stroke-linecap="round"/>
+      <path d="M35 106 Q53 94 71 106 Q89 118 107 106 Q125 94 143 106 Q157 114 165 106" fill="none" stroke="#ddd6fe" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="52" cy="164" r="4" fill="#fde68a"/>
+      <circle cx="100" cy="168" r="4" fill="#a78bfa"/>
+      <circle cx="148" cy="164" r="4" fill="#fde68a"/>
+      <text x="100" y="90" text-anchor="middle" font-size="20">🔱</text>
+      <rect x="70" y="43" width="9" height="23" rx="3.5" fill="#4c1d95"/>
+      <rect x="95" y="36" width="9" height="30" rx="3.5" fill="#3730a3"/>
+      <rect x="120" y="43" width="9" height="23" rx="3.5" fill="#4c1d95"/>
+      <g id="flames">
+        <ellipse cx="74.5" cy="39" rx="4.5" ry="7.5" fill="#fbbf24"/>
+        <ellipse cx="74.5" cy="38" rx="2.5" ry="4" fill="#fef3c7"/>
+        <ellipse cx="99.5" cy="32" rx="4.5" ry="7.5" fill="#fbbf24"/>
+        <ellipse cx="99.5" cy="31" rx="2.5" ry="4" fill="#fef3c7"/>
+        <ellipse cx="124.5" cy="39" rx="4.5" ry="7.5" fill="#fbbf24"/>
+        <ellipse cx="124.5" cy="38" rx="2.5" ry="4" fill="#fef3c7"/>
+      </g>
+      <g id="blown" style="display:none">
+        <text x="74" y="36" text-anchor="middle" font-size="13">💨</text>
+        <text x="99" y="29" text-anchor="middle" font-size="13">💨</text>
+        <text x="124" y="36" text-anchor="middle" font-size="13">💨</text>
+      </g>
+    </svg>
+    <br>
+    <button class="blow-btn" id="blowBtn" onclick="blowCandles(this)">🕯️ Blow the candles!</button>
+    <div class="blown-msg" id="blownmsg">🥳 Wish made! Bholenath fulfils it! 🔱💜</div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div style="font-size:2rem;animation:hb 1.2s ease-in-out infinite">💜🔱💜</div>
+    <div class="footer-title" style="margin-top:10px">Har Har Mahadev, Macha! 🙏</div>
+    <p style="color:#93c5fd;font-size:.9rem;margin:.6rem 0 1rem;line-height:1.9">
+      May Bholenath always bless you,<br>
+      may Krishna's flute play joy in your life,<br>
+      and may every day feel as warm as our bus stop evenings. 💙🪈
+    </p>
+    <div style="font-size:1.3rem">🔱🪈🦚🪈🔱</div>
+    <div class="footer-sub" style="margin-top:10px">Made with 💜 by Inchara Yadav</div>
+  </div>
+</div>
+
+<!-- ENVELOPE OVERLAY -->
+<div class="env-overlay" id="envOverlay">
+  <div class="envelope-scene">
+    <button class="env-close" onclick="closeGift()">✕</button>
+
+    <!-- Envelope SVG -->
+    <div class="env-svg-wrap" onclick="openLetter()">
+      <svg viewBox="0 0 520 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="eg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#4c1d95"/>
+            <stop offset="100%" stop-color="#1e3a8a"/>
+          </linearGradient>
+          <linearGradient id="flap" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#6d28d9"/>
+            <stop offset="100%" stop-color="#4c1d95"/>
+          </linearGradient>
+        </defs>
+        <!-- body -->
+        <rect x="10" y="60" width="500" height="210" rx="14" fill="url(#eg)" stroke="#7c3aed" stroke-width="1.5"/>
+        <!-- flap open -->
+        <path id="envFlap" d="M10 60 L260 170 L510 60 Z" fill="url(#flap)" stroke="#7c3aed" stroke-width="1"/>
+        <!-- inner triangle shadow -->
+        <path d="M10 270 L260 160 L510 270 Z" fill="rgba(0,0,0,0.15)"/>
+        <!-- fold lines -->
+        <line x1="10" y1="60" x2="260" y2="170" stroke="#a78bfa" stroke-width=".8" opacity=".4"/>
+        <line x1="510" y1="60" x2="260" y2="170" stroke="#a78bfa" stroke-width=".8" opacity=".4"/>
+        <!-- wax seal -->
+        <circle cx="260" cy="175" r="28" fill="#7c3aed" stroke="#fbbf24" stroke-width="2"/>
+        <text x="260" y="184" text-anchor="middle" font-size="22">🔱</text>
+        <!-- sparkles -->
+        <text x="60" y="50" font-size="18">✨</text>
+        <text x="440" y="50" font-size="18">✨</text>
+        <text x="250" y="30" font-size="16">💜</text>
+        <text x="100" y="230" font-size="14">🪈</text>
+        <text x="390" y="230" font-size="14">🪈</text>
+        <!-- hint text -->
+        <text x="260" y="240" text-anchor="middle" font-family="Nunito,sans-serif" font-size="13" fill="#c4b5fd" opacity=".8">tap to open 💜</text>
+      </svg>
+    </div>
+
+    <!-- LETTER (pops out) -->
+    <div class="letter" id="letter">
+      <div class="letter-title">📸 Our Memories, Macha 💜</div>
+      <div class="mem-cards-inner">
+
+        <div class="mcard">
+          <div class="mcard-tape"></div>
+          <div class="mcard-illo c1">🚌</div>
+          <div class="mcard-name">Bus Stop Diaries</div>
+          <div class="mcard-desc">Everyone left. We stayed. Just us & our endless talks 💙</div>
+        </div>
+
+        <div class="mcard">
+          <div class="mcard-tape"></div>
+          <div class="mcard-illo c2">🧠</div>
+          <div class="mcard-name">One Brain Two Bodies</div>
+          <div class="mcard-desc">Same thoughts, same words, same time. Scary & beautiful 💜</div>
+        </div>
+
+        <div class="mcard">
+          <div class="mcard-tape"></div>
+          <div class="mcard-illo c3">🏆</div>
+          <div class="mcard-name">1st Prize — Our Way</div>
+          <div class="mcard-desc">We won & we knew EXACTLY how. That win was ours 🌟</div>
+        </div>
+
+        <div class="mcard">
+          <div class="mcard-tape"></div>
+          <div class="mcard-illo c4">💻</div>
+          <div class="mcard-name">Holiday Coders</div>
+          <div class="mcard-desc">Holidays = project time. No off days when we're together 🚀</div>
+        </div>
+
+      </div>
+      <div class="letter-note">
+        <span class="g">Macha</span> — replace these cards with your real photos by sharing image links with Inchara! 📸 These are our memories illustrated with all the love. 💜<br><br>
+        <span class="g">🔱 Har Har Mahadev</span> — may Bholenath always keep you safe, happy, and blessed. <span class="g">Jai Shri Krishna 🪈</span> — may the flute of joy always play for you!
+      </div>
+      <div class="letter-sign">With all my heart — Inchara Yadav 🔱💜</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFETTI ──────────────────────────────────────────────────────────────
+var cnv=document.getElementById('cc'),ctx2=cnv.getContext('2d');
+function resizeCnv(){cnv.width=window.innerWidth;cnv.height=window.innerHeight;}
+resizeCnv();window.addEventListener('resize',resizeCnv);
+var pts=[],pcols=['#7c3aed','#a78bfa','#60a5fa','#fbbf24','#fde68a','#c4b5fd','#3b82f6','#ddd6fe','#818cf8'];
+function Pt(x,y,burst){
+  this.x=x!=null?x:Math.random()*cnv.width;
+  this.y=y!=null?y:-10;
+  this.r=burst?Math.random()*9+5:Math.random()*5+2;
+  this.c=pcols[Math.floor(Math.random()*pcols.length)];
+  this.vx=burst?(Math.random()-.5)*16:(Math.random()-.5)*3;
+  this.vy=burst?(Math.random()-.5)*16:Math.random()*3+1;
+  this.spin=Math.random()*.35-.175;this.angle=Math.random()*Math.PI*2;
+  this.alpha=1;this.g=burst?.28:.07;this.shape=Math.floor(Math.random()*3);
+}
+Pt.prototype.update=function(){this.x+=this.vx;this.y+=this.vy;this.vy+=this.g;this.angle+=this.spin;if(this.y>cnv.height+20)this.alpha=0;};
+Pt.prototype.draw=function(){
+  ctx2.save();ctx2.globalAlpha=this.alpha;ctx2.fillStyle=this.c;
+  ctx2.translate(this.x,this.y);ctx2.rotate(this.angle);
+  if(this.shape===0){ctx2.fillRect(-this.r/2,-this.r/2,this.r,this.r);}
+  else if(this.shape===1){ctx2.beginPath();ctx2.arc(0,0,this.r/2,0,Math.PI*2);ctx2.fill();}
+  else{ctx2.beginPath();ctx2.moveTo(0,-this.r);for(var i=0;i<5;i++){ctx2.lineTo(Math.cos((i*4*Math.PI/5)-Math.PI/2)*this.r*.4,Math.sin((i*4*Math.PI/5)-Math.PI/2)*this.r*.4);ctx2.lineTo(Math.cos(((i+.5)*4*Math.PI/5)-Math.PI/2)*this.r,Math.sin(((i+.5)*4*Math.PI/5)-Math.PI/2)*this.r);}ctx2.closePath();ctx2.fill();}
+  ctx2.restore();
+};
+function bigBurst(cx,cy){for(var i=0;i<140;i++)pts.push(new Pt(cx,cy,true));}
+function animPts(){
+  ctx2.clearRect(0,0,cnv.width,cnv.height);
+  if(Math.random()>.8)pts.push(new Pt(null,null,false));
+  pts=pts.filter(function(p){return p.alpha>0;});
+  pts.forEach(function(p){p.update();p.draw();});
+  requestAnimationFrame(animPts);
+}
+animPts();
+setTimeout(function(){for(var i=0;i<55;i++)pts.push(new Pt(null,null,false));},300);
+
+// ── STARS ──────────────────────────────────────────────────────────────────
+var sb=document.getElementById('starbg');
+var sc2=['#a78bfa','#c4b5fd','#93c5fd','#fde68a','#ddd6fe','#fff'];
+for(var s=0;s<45;s++){
+  var st=document.createElement('div');var sz=Math.random()*5+2;
+  st.style.cssText=['position:absolute','border-radius:50%','width:'+sz+'px','height:'+sz+'px','left:'+Math.random()*100+'%','top:'+Math.random()*100+'%','background:'+sc2[Math.floor(Math.random()*sc2.length)],'animation:fst '+(Math.random()*5+3)+'s ease-in-out '+(Math.random()*4)+'s infinite','opacity:'+(Math.random()*.5+.2)].join(';');
+  sb.appendChild(st);
+}
+
+// ── WEB AUDIO KRISHNA FLUTE / BHAJAN ───────────────────────────────────────
+var audioCtx=null,musicOn=false,osc1,osc2,gainNode,lfo,lfoGain;
+var krishnaScale=[261.63,293.66,329.63,349.23,392.00,440.00,493.88,523.25]; // C major / sa re ga ma
+var noteIdx=0,noteTimer=null;
+
+function initAudio(){
+  if(audioCtx) return;
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  gainNode=audioCtx.createGain();
+  gainNode.gain.setValueAtTime(0,audioCtx.currentTime);
+  gainNode.connect(audioCtx.destination);
+}
+
+function playFlute(){
+  if(!audioCtx) return;
+  var freq=krishnaScale[noteIdx%krishnaScale.length];
+  noteIdx++;
+
+  osc1=audioCtx.createOscillator();
+  osc1.type='sine';
+  osc1.frequency.setValueAtTime(freq,audioCtx.currentTime);
+
+  // vibrato LFO
+  var lfo=audioCtx.createOscillator();
+  lfo.frequency.setValueAtTime(5,audioCtx.currentTime);
+  var lfoG=audioCtx.createGain();
+  lfoG.gain.setValueAtTime(4,audioCtx.currentTime);
+  lfo.connect(lfoG);
+  lfoG.connect(osc1.frequency);
+  lfo.start();
+
+  // breathiness — second sine slightly detuned
+  osc2=audioCtx.createOscillator();
+  osc2.type='sine';
+  osc2.frequency.setValueAtTime(freq*1.003,audioCtx.currentTime);
+  var g2=audioCtx.createGain();
+  g2.gain.setValueAtTime(0.25,audioCtx.currentTime);
+  osc2.connect(g2);
+  g2.connect(gainNode);
+
+  osc1.connect(gainNode);
+
+  var now=audioCtx.currentTime;
+  gainNode.gain.cancelScheduledValues(now);
+  gainNode.gain.setValueAtTime(0,now);
+  gainNode.gain.linearRampToValueAtTime(0.3,now+0.12);
+  gainNode.gain.setValueAtTime(0.3,now+0.32);
+  gainNode.gain.linearRampToValueAtTime(0,now+0.55);
+
+  osc1.start(now);osc2.start(now);
+  osc1.stop(now+0.6);osc2.stop(now+0.6);lfo.stop(now+0.6);
+}
+
+function startMusic(){
+  initAudio();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+  musicOn=true;
+  document.getElementById('musicBtn').textContent='🔊';
+  function loop(){
+    if(!musicOn) return;
+    playFlute();
+    var gaps=[400,350,500,300,450,400,600,350];
+    var gap=gaps[noteIdx%gaps.length];
+    noteTimer=setTimeout(loop,gap);
+  }
+  loop();
+}
+
+function stopMusic(){
+  musicOn=false;
+  if(noteTimer) clearTimeout(noteTimer);
+  if(gainNode&&audioCtx){gainNode.gain.setValueAtTime(0,audioCtx.currentTime);}
+  document.getElementById('musicBtn').textContent='🔇';
+}
+
+function toggleMusic(){
+  if(musicOn){stopMusic();}else{startMusic();}
+}
+
+// ── GIFT & ENVELOPE ────────────────────────────────────────────────────────
+function openGift(){
+  document.getElementById('envOverlay').classList.add('open');
+  bigBurst(window.innerWidth/2,window.innerHeight/2);
+  if(!musicOn) startMusic();
+}
+function closeGift(){
+  document.getElementById('envOverlay').classList.remove('open');
+  document.getElementById('letter').classList.remove('show');
+}
+function openLetter(){
+  var letter=document.getElementById('letter');
+  letter.classList.add('show');
+  bigBurst(window.innerWidth/2,window.innerHeight*0.4);
+}
+
+// ── CANDLES ────────────────────────────────────────────────────────────────
+var cblown=false;
+function blowCandles(btn){
+  if(cblown) return;cblown=true;
+  document.getElementById('flames').style.display='none';
+  document.getElementById('blown').style.display='block';
+  btn.disabled=true;
+  document.getElementById('blownmsg').style.display='block';
+  bigBurst(window.innerWidth/2,window.innerHeight*0.5);
+}
+</script>
+</body>
+</html>
