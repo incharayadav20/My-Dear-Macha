@@ -98,23 +98,114 @@ canvas#cc{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none
 @keyframes letterRise{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
 .letter.show{display:block}
 .letter-title{font-family:'Pacifico',cursive;color:#fde68a;font-size:1.2rem;text-align:center;margin-bottom:14px}
-
 /* MEMORY CARDS INSIDE LETTER */
-.mem-cards-inner{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.mcard{background:rgba(124,58,237,.15);border:1px solid rgba(167,139,250,.25);border-radius:14px;padding:12px;text-align:center;position:relative;overflow:hidden;transition:transform .3s}
-.mcard:hover{transform:translateY(-4px) rotate(-1deg)}
-.mcard:nth-child(2):hover{transform:translateY(-4px) rotate(1deg)}
-.mcard:nth-child(3):hover{transform:translateY(-4px) rotate(.5deg)}
-.mcard:nth-child(4):hover{transform:translateY(-4px) rotate(-1deg)}
-.mcard-tape{position:absolute;top:-5px;left:50%;transform:translateX(-50%) rotate(-3deg);width:32px;height:10px;background:rgba(196,181,253,.3);border-radius:2px}
-.mcard-illo{width:100%;height:90px;border-radius:10px;margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:2.6rem;position:relative;overflow:hidden}
-.mcard-illo.c1{background:linear-gradient(135deg,#1e3a8a,#3730a3)}
-.mcard-illo.c2{background:linear-gradient(135deg,#4c1d95,#1e40af)}
-.mcard-illo.c3{background:linear-gradient(135deg,#78350f,#1e3a8a)}
-.mcard-illo.c4{background:linear-gradient(135deg,#14532d,#1e3a8a)}
-.mcard-illo img{width:100%;height:250px;object-fit:cover;display:block}
-.mcard-name{font-size:.75rem;font-weight:800;color:#c4b5fd;margin-bottom:3px}
-.mcard-desc{font-size:.7rem;color:#94a3b8;line-height:1.5}
+.mem-cards-inner{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.mcard{
+    background:rgba(124,58,237,.15);
+    border:1px solid rgba(167,139,250,.25);
+    border-radius:14px;
+    padding:12px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    transition:transform .3s;
+}
+
+.mcard:hover{
+    transform:translateY(-4px) rotate(-1deg);
+}
+
+.mcard:nth-child(2):hover{
+    transform:translateY(-4px) rotate(1deg);
+}
+
+.mcard:nth-child(3):hover{
+    transform:translateY(-4px) rotate(.5deg);
+}
+
+.mcard:nth-child(4):hover{
+    transform:translateY(-4px) rotate(-1deg);
+}
+
+.mcard-tape{
+    position:absolute;
+    top:-5px;
+    left:50%;
+    transform:translateX(-50%) rotate(-3deg);
+    width:32px;
+    height:10px;
+    background:rgba(196,181,253,.3);
+    border-radius:2px;
+}
+
+/* PHOTO CONTAINER */
+.mcard-illo{
+    width:100%;
+    height:180px;   /* Increase/decrease as needed */
+    border-radius:10px;
+    margin-bottom:8px;
+    position:relative;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* BACKUP GRADIENTS */
+.mcard-illo.c1{
+    background:linear-gradient(135deg,#1e3a8a,#3730a3);
+}
+
+.mcard-illo.c2{
+    background:linear-gradient(135deg,#4c1d95,#1e40af);
+}
+
+.mcard-illo.c3{
+    background:linear-gradient(135deg,#78350f,#1e3a8a);
+}
+
+.mcard-illo.c4{
+    background:linear-gradient(135deg,#14532d,#1e3a8a);
+}
+
+/* IMAGE FITTING */
+.mcard-illo img{
+    width:100%;
+    height:100%;
+    object-fit:cover;  /* Makes image fill the card nicely */
+    display:block;
+    border-radius:10px;
+}
+
+.mcard-name{
+    font-size:.75rem;
+    font-weight:800;
+    color:#c4b5fd;
+    margin-bottom:3px;
+}
+
+.mcard-desc{
+    font-size:.7rem;
+    color:#94a3b8;
+    line-height:1.5;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+    .mem-cards-inner{
+        grid-template-columns:1fr;
+    }
+
+    .mcard-illo{
+        height:220px;
+    }
+}
 
 /* letter note */
 .letter-note{background:rgba(96,165,250,.08);border:1px solid rgba(96,165,250,.2);border-radius:12px;padding:12px 14px;font-size:.85rem;color:#cbd5e1;line-height:1.8;text-align:center;margin-bottom:10px}
